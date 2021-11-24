@@ -1,11 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Phase2Session1.Models;
+﻿using Entities;
+using Microsoft.EntityFrameworkCore;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Phase2Session1.Data
+namespace DataAccessLayer
 {
     public class AppDBContext : DbContext
     {

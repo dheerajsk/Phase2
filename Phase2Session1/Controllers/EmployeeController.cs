@@ -2,27 +2,25 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using DataAccessLayer.Repositories;
+using Entities;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using Phase2Session1.Data;
-using Phase2Session1.Models;
 
 namespace Phase2Session1.Controllers
 {
     public class EmployeeController : Controller
     {
-        private readonly AppDBContext _context;
+        private readonly EmployeeRepository _repo;
 
-        public EmployeeController(AppDBContext context)
+        public EmployeeController(EmployeeRepository repo)
         {
-            _context = context;
+            _repo = repo;
         }
 
         // GET: Employee
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            return View(await _context.Employee.ToListAsync());
+            return View(_repo.GetAll());
         }
 
         // GET: Employee/Details/5
@@ -33,8 +31,7 @@ namespace Phase2Session1.Controllers
                 return NotFound();
             }
 
-            var employee = await _context.Employee
-                .FirstOrDefaultAsync(m => m.ID == id);
+            var employee = _repo.Get(id.Value);
             if (employee == null)
             {
                 return NotFound();
@@ -54,26 +51,25 @@ namespace Phase2Session1.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,Name,Dept")] Employee employee)
+        public IActionResult Create([Bind("ID,Name,Dept")] Employee employee)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(employee);
-                await _context.SaveChangesAsync();
+                _repo.Add(employee);
                 return RedirectToAction(nameof(Index));
             }
             return View(employee);
         }
 
         // GET: Employee/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public IActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var employee = await _context.Employee.FindAsync(id);
+            var employee = _repo.Get(id.Value);
             if (employee == null)
             {
                 return NotFound();
@@ -95,37 +91,21 @@ namespace Phase2Session1.Controllers
 
             if (ModelState.IsValid)
             {
-                try
-                {
-                    _context.Update(employee);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!EmployeeExists(employee.ID))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
+                _repo.Update(employee);
                 return RedirectToAction(nameof(Index));
             }
             return View(employee);
         }
 
         // GET: Employee/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public IActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var employee = await _context.Employee
-                .FirstOrDefaultAsync(m => m.ID == id);
+            var employee = _repo.Get(id.Value);
             if (employee == null)
             {
                 return NotFound();
@@ -137,17 +117,10 @@ namespace Phase2Session1.Controllers
         // POST: Employee/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public IActionResult DeleteConfirmed(int id)
         {
-            var employee = await _context.Employee.FindAsync(id);
-            _context.Employee.Remove(employee);
-            await _context.SaveChangesAsync();
+            _repo.Delete(id);
             return RedirectToAction(nameof(Index));
-        }
-
-        private bool EmployeeExists(int id)
-        {
-            return _context.Employee.Any(e => e.ID == id);
         }
     }
 }
