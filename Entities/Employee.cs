@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace Entities
 {
-    public class Employee
+    public class Employee : BaseEntity
     {
-        public int ID { get; set; }
 
         [Required]
         [Display(Name="EmployeeName")]

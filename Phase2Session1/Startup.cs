@@ -1,5 +1,6 @@
 using DataAccessLayer;
 using DataAccessLayer.Repositories;
+using Entities;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -26,7 +27,8 @@ namespace Phase2Session1
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddTransient<EmployeeRepository>();
+            services.AddTransient<IBaseRepository<Department>, BaseRepository<Department>>();
+            services.AddTransient<IBaseRepository<Employee>, BaseRepository<Employee>>();
             services.AddDbContext<AppDBContext>(options => options.UseSqlServer(
                 Configuration.GetConnectionString("AppDBContext")));
             services.AddControllersWithViews();

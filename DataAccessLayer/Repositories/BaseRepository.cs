@@ -7,35 +7,35 @@ using System.Threading.Tasks;
 
 namespace DataAccessLayer.Repositories
 {
-    public class EmployeeRepository
+    public class BaseRepository<T> : IBaseRepository<T>
+        where T : BaseEntity
     {
         private readonly AppDBContext _context;
 
-        public EmployeeRepository(AppDBContext context)
+        public BaseRepository(AppDBContext context)
         {
             _context = context;
         }
 
-
-        public IEnumerable<Employee> GetAll()
+        public IEnumerable<T> GetAll()
         {
-            return _context.Employee.ToList();
+            return _context.Set<T>().ToList();
         }
 
-        public Employee Get(int id)
+        public T Get(int id)
         {
-            return _context.Employee.FirstOrDefault(e => e.ID == id);
+            return _context.Set<T>().FirstOrDefault(e => e.ID == id);
         }
 
-        public void Add(Employee employee)
+        public void Add(T entity)
         {
-            _context.Add(employee);
+            _context.Add(entity);
             _context.SaveChanges();
         }
 
-        public void Update(Employee employee)
+        public void Update(T entity)
         {
-            _context.Update(employee);
+            _context.Update(entity);
             _context.SaveChanges();
         }
 
@@ -45,12 +45,9 @@ namespace DataAccessLayer.Repositories
             _context.SaveChanges();
         }
 
-
-        public bool EmployeeExists(int id)
+        public bool Exists(int id)
         {
-            return _context.Employee.Any(e => e.ID == id);
+            return _context.Set<T>().Any(e => e.ID == id);
         }
-
-
     }
 }
