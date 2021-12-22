@@ -13,8 +13,8 @@ namespace LINQ_Operators
             list.Add(new Employee { ID = 2, Department = "Finance", DepartmentID = 1, Name = "Dave" });
             list.Add(new Employee { ID = 3, Department = "IT", DepartmentID = 3, Name = "Sushil" });
             list.Add(new Employee { ID = 4, Department = "IT", DepartmentID = 3, Name = "Ram" });
-            list.Add(new Employee { ID = 5, Department = "HR", DepartmentID = 2, Name = "Sagar" });
-            list.Add(new Employee { ID = 6, Department = "HR", DepartmentID = 2, Name = "Palak" });
+            list.Add(new Employee { ID = 5, Department = "Finance", DepartmentID = 2, Name = "Sagar" });
+            list.Add(new Employee { ID = 6, Department = "Finance", DepartmentID = 2, Name = "Palak" });
 
             return list;
         }

@@ -7,7 +7,11 @@ namespace LINQ_Operators
         static void Main(string[] args)
         {
             //SortOperator.Do();
-            JoinOperator.Do();
+            //JoinOperator.Do();
+            //FilterOperator.Do();
+            //AggregationOperator.Do();
+            //ElementOperator.Do();
+            PartitionOperator.Do();
         }
     }
 }
